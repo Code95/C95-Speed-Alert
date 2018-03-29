@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         //Setting file resource
         mSpeedAlert.setAlertResource(R.raw.alert);
 
-        //Setting alert mode to play from a url
+        /*Setting alert mode to play from a url*/
+
         //mSpeedAlert.setAlertMode(AlertPlayer.Mode.DataFromUrl);
         //Setting url of the file
         //mSpeedAlert.setAlertUrl("http://www.freesfx.co.uk/rx2/mp3s/5/16927_1461333031.mp3");

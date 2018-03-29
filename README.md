@@ -18,7 +18,7 @@ Step 2. Add the dependency:
 
 ```
 dependencies {
-	        compile 'com.github.YaraAHakiim:SpeedAlert:1.0.2'
+	        compile 'com.github.Code95:C95-QR-Scanner-Android:1.0.0'
 	}
 ```
 
@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         //Setting file resource
         mSpeedAlert.setAlertResource(R.raw.alert);
 
-        //Setting alert mode to play from a url
+        /*Setting alert mode to play from a url*/
+        
         //mSpeedAlert.setAlertMode(AlertPlayer.Mode.DataFromUrl);
         //Setting url of the file
         //mSpeedAlert.setAlertUrl("http://www.freesfx.co.uk/rx2/mp3s/5/16927_1461333031.mp3");
