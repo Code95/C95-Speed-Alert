@@ -26,6 +26,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    implementation 'com.github.Code95:C95-Speed-Alert:1.0.0'
-
+    implementation 'com.github.Code95:C95-Speed-Alert:1.1.0'
 }

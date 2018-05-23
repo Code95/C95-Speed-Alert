@@ -57,6 +57,12 @@ public class MainActivity extends AppCompatActivity {
         //Setting url of the file
         //mSpeedAlert.setAlertUrl("http://www.freesfx.co.uk/rx2/mp3s/5/16927_1461333031.mp3");
 
+        /*Setting screen mode (ModeOn/ModeOff) when on alert starts whenever the screen is on and only if the screen is on
+        * / when off alert starts regardless the screen is on or off.*/
+
+        //If not set, default screen mode is ModeOff
+        mSpeedAlert.setScreenMode(SpeedAlert.ScreenMode.ModeOn);
+
         /*Speed alert is based on GPS, so the location permission must be added to manifest and requested at runtime*/
 
         //Checking if location permission is granted
