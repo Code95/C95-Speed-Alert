@@ -18,7 +18,7 @@ Step 2. Add the dependency:
 
 ```
 dependencies {
-	        compile 'com.github.Code95:C95-QR-Scanner-Android:1.0.0'
+	        implementation 'com.github.Code95:C95-Speed-Alert:1.0.0'
 	}
 ```
 

@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.code95.speedalert.AlertPlayer;
 import com.code95.speedalert.SpeedAlert;
-import com.code95.speedalert.VoiceNotePlayer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         /*Speed alert is based on GPS, so the location permission must be added to manifest and requested at runtime*/
 
         //Checking if location permission is granted
+
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //Start tracking movement speed by giving location & speed minimum update time and distance. (time is seconds, distance in meters)
             mSpeedAlert.startTracking(1, 1);
