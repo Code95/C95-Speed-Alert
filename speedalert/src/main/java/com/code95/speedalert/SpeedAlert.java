@@ -6,7 +6,10 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 
 
@@ -27,6 +30,14 @@ public class SpeedAlert implements LocationListener {
     private int mAlertResId;
     private String mAlertUrl;
     private AlertPlayer.Mode mAlertMode;
+    private ScreenMode mScreenMode;
+    private PowerManager mPowerManager;
+
+
+    public enum ScreenMode {
+        ModeOn,
+        ModeOff
+    }
 
     /**
      * Constructor
@@ -36,6 +47,8 @@ public class SpeedAlert implements LocationListener {
      */
     public SpeedAlert(Context context, double maxSpeed) {
         mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+
         mContext = context;
         if(maxSpeed != 0) {
             mMaxSpeed = maxSpeed;
@@ -61,6 +74,7 @@ public class SpeedAlert implements LocationListener {
         mLocationManager.removeUpdates(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     @Override
     public void onLocationChanged(Location location) {
         playAlert(location);
@@ -85,10 +99,17 @@ public class SpeedAlert implements LocationListener {
      *
      * @param location used to get speed.
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     private void playAlert(Location location) {
         double speedInKmH = location.getSpeed() * 3.6;
         if (speedInKmH >= mMaxSpeed) {
-            AlertPlayer.playAlert(mContext, mAlertUrl, mAlertResId, mAlertMode);
+            if(mScreenMode == ScreenMode.ModeOn) {
+                if(mPowerManager.isInteractive()) {
+                    AlertPlayer.playAlert(mContext, mAlertUrl, mAlertResId, mAlertMode);
+                }
+            } else {
+                AlertPlayer.playAlert(mContext, mAlertUrl, mAlertResId, mAlertMode);
+            }
         }
     }
 
@@ -102,6 +123,10 @@ public class SpeedAlert implements LocationListener {
 
     public void setAlertMode(AlertPlayer.Mode mode) {
         this.mAlertMode = mode;
+    }
+
+    public void setScreenMode(ScreenMode screenMode) {
+        this.mScreenMode = screenMode;
     }
 
 }
