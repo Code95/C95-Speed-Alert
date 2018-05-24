@@ -43,8 +43,13 @@ public class MainActivity extends AppCompatActivity {
 
         /*Speed alert is based on GPS, so the location permission must be added to manifest and requested at runtime*/
 
-        //Checking if location permission is granted
+        /*Setting screen mode (ModeOn/ModeOff) when on alert starts whenever the screen is on and only if the screen is on
+         * / when off alert starts regardless the screen is on or off.*/
 
+        //If not set, default screen mode is ModeOff
+        mSpeedAlert.setScreenMode(SpeedAlert.ScreenMode.ModeOn);
+
+        //Checking if location permission is granted
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //Start tracking movement speed by giving location & speed minimum update time and distance. (time is seconds, distance in meters)
             mSpeedAlert.startTracking(1, 1);
