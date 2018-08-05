@@ -102,7 +102,7 @@ public class SpeedAlert implements LocationListener {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     private void playAlert(Location location) {
         double speedInKmH = location.getSpeed() * 3.6;
-        if (speedInKmH >= mMaxSpeed) {
+        if (speedInKmH == mMaxSpeed) {
             if(mScreenMode == ScreenMode.ModeOn) {
                 if(mPowerManager.isInteractive()) {
                     AlertPlayer.playAlert(mContext, mAlertUrl, mAlertResId, mAlertMode);
