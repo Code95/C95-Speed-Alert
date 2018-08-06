@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
+import android.widget.Toast;
 
 
 /**
@@ -32,6 +34,8 @@ public class SpeedAlert implements LocationListener {
     private AlertPlayer.Mode mAlertMode;
     private ScreenMode mScreenMode;
     private PowerManager mPowerManager;
+
+    private boolean mIsplayed = false;
 
 
     public enum ScreenMode {
@@ -77,6 +81,8 @@ public class SpeedAlert implements LocationListener {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     @Override
     public void onLocationChanged(Location location) {
+//        Toast.makeText(mContext,location.getSpeed()*3.6+"", Toast.LENGTH_SHORT).show();
+//        Log.d("Current Speed" , location.getSpeed()*3.6+"");
         playAlert(location);
     }
 
@@ -101,15 +107,21 @@ public class SpeedAlert implements LocationListener {
      */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     private void playAlert(Location location) {
+
         double speedInKmH = location.getSpeed() * 3.6;
-        if (speedInKmH == mMaxSpeed) {
-            if(mScreenMode == ScreenMode.ModeOn) {
-                if(mPowerManager.isInteractive()) {
+        if (speedInKmH >= mMaxSpeed) {
+            if(!mIsplayed) {
+                if (mScreenMode == ScreenMode.ModeOn) {
+                    if (mPowerManager.isInteractive()) {
+                        AlertPlayer.playAlert(mContext, mAlertUrl, mAlertResId, mAlertMode);
+                    }
+                } else {
                     AlertPlayer.playAlert(mContext, mAlertUrl, mAlertResId, mAlertMode);
                 }
-            } else {
-                AlertPlayer.playAlert(mContext, mAlertUrl, mAlertResId, mAlertMode);
+                mIsplayed = true;
             }
+        } else {
+            mIsplayed = false;
         }
     }
 

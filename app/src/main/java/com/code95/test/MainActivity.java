@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Instantiating speed alert with context and max speed.
-        mSpeedAlert = new SpeedAlert(this, 10);
+        mSpeedAlert = new SpeedAlert(this, 30);
 
         /*Setting alert mode and file, if not set a default alert will be played*/
 
