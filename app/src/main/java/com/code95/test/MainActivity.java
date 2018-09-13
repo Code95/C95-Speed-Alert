@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Instantiating speed alert with context and max speed.
-        mSpeedAlert = new SpeedAlert(this, 30);
+        mSpeedAlert = new SpeedAlert(this, 1, (long) getResources().getInteger(R.integer.time_between_alerts));
 
         /*Setting alert mode and file, if not set a default alert will be played*/
 
@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
         mSpeedAlert.setScreenMode(SpeedAlert.ScreenMode.ModeOn);
 
         //Checking if location permission is granted
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //Start tracking movement speed by giving location & speed minimum update time and distance. (time is seconds, distance in meters)
             mSpeedAlert.startTracking(1, 1);
         } else {
             //If location permission is not granted request it.
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION_PERMISSION_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION_CODE);
         }
     }
 
@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         //If location permission is granted start tracking.
-        if(requestCode == REQUEST_LOCATION_PERMISSION_CODE) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_LOCATION_PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //Start tracking movement speed by giving location & speed minimum update time and distance. (time is seconds, distance in meters)
                 mSpeedAlert.startTracking(1, 1);
             } else {
