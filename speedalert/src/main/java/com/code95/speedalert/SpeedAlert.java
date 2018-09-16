@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
-import android.widget.Toast;
 
 
 /**
@@ -34,7 +33,7 @@ public class SpeedAlert implements LocationListener {
     private ScreenMode mScreenMode;
     private PowerManager mPowerManager;
     private SharedPrefDataSource mSharedPrefRepository;
-    private boolean mIsplayed = false;
+//    private boolean mIsplayed = false;
     private Long mTimeDiffBetweenAlerts;
 
     public enum ScreenMode {
@@ -130,7 +129,7 @@ public class SpeedAlert implements LocationListener {
         if (speedInKmH >= mMaxSpeed
                 && (currentDate - mSharedPrefRepository.getLastAlertDate())
                 >= (mTimeDiffBetweenAlerts)) {
-            if (!mIsplayed) {
+//            if (!mIsplayed) {
                 mSharedPrefRepository.setLastAlertDate(currentDate);
                 if (mScreenMode == ScreenMode.ModeOn) {
                     if (mPowerManager.isInteractive()) {
@@ -139,11 +138,12 @@ public class SpeedAlert implements LocationListener {
                 } else {
                     AlertPlayer.playAlert(mContext, mAlertUrl, mAlertResId, mAlertMode);
                 }
-                mIsplayed = true;
-            }
-        } else {
-            mIsplayed = false;
+//                mIsplayed = true;
+//            }
         }
+//        else {
+//            mIsplayed = false;
+//        }
     }
 
     public void setAlertResource(int voiceNoteResId) {
