@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SpeedAlert.iml" filepath="$PROJECT_DIR$/SpeedAlert.iml" />
+      <module fileurl="file://$PROJECT_DIR$/C95-Speed-Alert.iml" filepath="$PROJECT_DIR$/C95-Speed-Alert.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/speedalert/speedalert.iml" filepath="$PROJECT_DIR$/speedalert/speedalert.iml" />
     </modules>
