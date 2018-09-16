@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
 
 /**
@@ -32,7 +33,9 @@ public class SpeedAlert implements LocationListener {
     private AlertPlayer.Mode mAlertMode;
     private ScreenMode mScreenMode;
     private PowerManager mPowerManager;
-
+    private SharedPrefDataSource mSharedPrefRepository;
+    private boolean mIsplayed = false;
+    private Long mTimeDiffBetweenAlerts;
 
     public enum ScreenMode {
         ModeOn,
@@ -41,16 +44,35 @@ public class SpeedAlert implements LocationListener {
 
     /**
      * Constructor
+     *
      * @param context
      * @param maxSpeed The max speed at which the alert is played (default value = 30km/h)
-     *
      */
     public SpeedAlert(Context context, double maxSpeed) {
+        mSharedPrefRepository = new SharedPrefRepository(context);
         mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 
         mContext = context;
-        if(maxSpeed != 0) {
+        if (maxSpeed != 0) {
+            mMaxSpeed = maxSpeed;
+        }
+    }
+
+    /**
+     * Constructor
+     *
+     * @param context
+     * @param maxSpeed The max speed at which the alert is played (default value = 30km/h)
+     */
+    public SpeedAlert(Context context, double maxSpeed, Long timeDiffBetweenAlerts) {
+        this.mTimeDiffBetweenAlerts = timeDiffBetweenAlerts;
+        mSharedPrefRepository = new SharedPrefRepository(context);
+        mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+
+        mContext = context;
+        if (maxSpeed != 0) {
             mMaxSpeed = maxSpeed;
         }
     }
@@ -58,7 +80,7 @@ public class SpeedAlert implements LocationListener {
     /**
      * Method used to start getting location updates
      *
-     * @param minUpdateTime Minimum time before getting new updated location.
+     * @param minUpdateTime     Minimum time before getting new updated location.
      * @param minUpdateDistance Minimum distance before getting new updated location.
      */
     public void startTracking(int minUpdateTime, int minUpdateDistance) {
@@ -77,6 +99,8 @@ public class SpeedAlert implements LocationListener {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     @Override
     public void onLocationChanged(Location location) {
+//        Toast.makeText(mContext,location.getSpeed()*3.6+"", Toast.LENGTH_SHORT).show();
+//        Log.d("Current Speed" , location.getSpeed()*3.6+"");
         playAlert(location);
     }
 
@@ -101,15 +125,24 @@ public class SpeedAlert implements LocationListener {
      */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     private void playAlert(Location location) {
-        double speedInKmH = location.getSpeed() * 3.6;
-        if (speedInKmH >= mMaxSpeed) {
-            if(mScreenMode == ScreenMode.ModeOn) {
-                if(mPowerManager.isInteractive()) {
+        Long currentDate = System.currentTimeMillis();
+        double speedInKmH = location.getSpeed() * 33.6;
+        if (speedInKmH >= mMaxSpeed
+                && (currentDate - mSharedPrefRepository.getLastAlertDate())
+                >= (mTimeDiffBetweenAlerts)) {
+            if (!mIsplayed) {
+                mSharedPrefRepository.setLastAlertDate(currentDate);
+                if (mScreenMode == ScreenMode.ModeOn) {
+                    if (mPowerManager.isInteractive()) {
+                        AlertPlayer.playAlert(mContext, mAlertUrl, mAlertResId, mAlertMode);
+                    }
+                } else {
                     AlertPlayer.playAlert(mContext, mAlertUrl, mAlertResId, mAlertMode);
                 }
-            } else {
-                AlertPlayer.playAlert(mContext, mAlertUrl, mAlertResId, mAlertMode);
+                mIsplayed = true;
             }
+        } else {
+            mIsplayed = false;
         }
     }
 
